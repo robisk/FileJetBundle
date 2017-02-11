@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="content">
+        <h1>Single crop</h1>
+    </div>
+
+    <div>
+        <div style="width: 1000px; height: 800px">
+            <img id="image" src="">
+        </div>
+        <button id="crop-button">Crop</button>
+        <button id="undo-button" disabled>Undo</button>
+        <button id="confirm-button" disabled>Confirm</button>
+    </div>
+
+    <script>
+        var image = document.getElementById('image');
+
+        var mutableImage = new MutableImage(
+                '{{ file.fileIdentifier }}',
+                '{{ urlPatterns.publicDownload }}',
+                '{{ urlPatterns.mutatedDownload }}'
+        );
+
+        var options = new EverlutionCropperOptions();
+        options.aspectRatio = 16 / 9;
+        options.zoomable = false;
+        options.viewDownscaling = true;
+
+        var everlutionCropper = new EverlutionCropper(image, mutableImage, options);
+
+        var cropButton = document.getElementById('crop-button');
+        var undoButton = document.getElementById('undo-button');
+        var confirmButton = document.getElementById('confirm-button');
+
+        cropButton.onclick = function() {
+            cropButton.disabled = true;
+            undoButton.disabled = false;
+            confirmButton.disabled = false;
+            everlutionCropper.relativeCrop();
+        };
+
+        undoButton.onclick = function() {
+            cropButton.disabled = false;
+            undoButton.disabled = true;
+            confirmButton.disabled = true;
+            everlutionCropper.getState().undo();
+        };
+
+        confirmButton.onclick = function() {
+            var mutation = everlutionCropper.getState().getCurrentMutation().toString();
+
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('PUT', '{{ url('single-crop-confirm', {'id': file.id}) }}', false);
+            xmlHttp.send(mutation);
+
+            window.location.replace('{{ url('homepage') }}');
+        };
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/everlutionfilesystem/cropperjs/cropper.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/everlutionfilesystem/cropperjs/cropper.js') }}"></script>
+    <script src="{{ asset('bundles/everlutionfilesystem/everlution_cropper.js') }}"></script>
+{% endblock %}

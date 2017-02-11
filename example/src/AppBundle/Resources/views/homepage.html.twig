@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="content">
+        <h1>File system - TEST</h1>
+        <div>
+            <form>
+                <input type="file" name="file" id="file-input">
+                <input type="submit" id="submit">
+            </form>
+            <hr>
+            <div>
+                <ul>
+                    {% for file in files %}
+                        <li>
+                            <span>
+                                {{ file.fileIdentifier }}:
+                            </span>
+                            {% if file.fileMutation is not null %}
+                                <span>
+                                    ({{ file.fileMutation }})
+                                </span>
+                            {% endif %}
+                            <a href="{{ file_url(file) }}" target="_blank">NON-MUTATED</a>
+                            <span> | </span>
+                            <a href="{{ file_url(file, 'sz_500x500', 400) }}" target="_blank">MUTATED</a>
+                            <span> | </span>
+                            <a href="{{ url('delete', {'id': file.id}) }}">DELETE</a>
+
+                            {% if file.fileMutation is null %}
+                                <span> | </span>
+                                <a href="{{ url('single-crop', {'id': file.id}) }}">CROP</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('form').on('submit', function(event) {
+                event.preventDefault();
+
+                var input = document.getElementById('file-input');
+                var file = input.files[0];
+
+                $.ajax({
+                    url: "{{ url('unique-upload') }}",
+                    data: JSON.stringify({'path': file.name, 'contentType': file.type}),
+                    method: 'POST',
+                    context: document.body
+                }).done(function(result) {
+                    $.ajax({
+                        url: result.url,
+                        data: file,
+                        method: result.httpMethod,
+                        headers: result.headers,
+                        context: document.body,
+                        processData: false,
+                        contentType: false
+                    }).done(function(result) {
+                        console.log(result);
+                        window.location.replace('{{ url('homepage') }}');
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+{% endblock %}

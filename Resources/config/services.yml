@@ -1,0 +1,90 @@
+services:
+    # CACHE
+    everlution.file.cache:
+        class: Doctrine\Common\Cache\FilesystemCache
+        arguments:
+            - '%kernel.cache_dir%'
+
+
+
+    # REQUEST SENDER
+    everlution.file.request_sender.rpc:
+        class: Everlution\FileJetBundle\Http\RequestSender\RpcRequestSender
+        arguments:
+            - '@everlution.file.request_sender.curl'
+
+    everlution.file.request_sender.curl:
+        class: Everlution\FileJetBundle\Http\RequestSender\CurlRequestSender
+        public: false
+        arguments:
+            - '@everlution.file.request_sender.curl.ci_rest_client'
+
+    everlution.file.request_sender.curl.ci_rest_client:
+        class: Ci\RestClientBundle\Services\RestClient
+        public: false
+        arguments:
+            - '@everlution.file.request_sender.curl.ci_curl'
+
+    everlution.file.request_sender.curl.ci_curl:
+        class: Ci\RestClientBundle\Services\Curl
+        public: false
+        arguments:
+            - '@everlution.file.request_sender.curl.ci_options_handler'
+
+    everlution.file.request_sender.curl.ci_options_handler:
+        class: Ci\RestClientBundle\Services\CurlOptionsHandler
+        public: false
+        arguments:
+            - []
+
+
+
+    # STORAGES
+    everlution.file.storages:
+        class: Everlution\FileJetBundle\Storage\Storages
+        factory: [Everlution\FileJetBundle\Storage\StoragesFactory, createStorages]
+        arguments:
+            - '%everlution.file.storages_config%'
+
+
+
+    # MANAGEMENT
+    everlution.file.management:
+        class: Everlution\FileJetBundle\Api\Management\RemoteManagement
+        arguments:
+            - '@everlution.file.storages'
+            - '@everlution.file.request_sender.rpc'
+
+    # REQUEST FORMAT PROVIDER
+    everlution.file.request_format_provider:
+        class: Everlution\FileJetBundle\Api\RequestFormatProvider\RemoteRequestFormatProvider
+        arguments:
+            - '@everlution.file.storages'
+            - '@everlution.file.request_sender.rpc'
+
+
+    # URL PROVIDER
+    everlution.file.url_provider:
+        class: Everlution\FileJetBundle\Api\UrlProvider\LocalUrlProvider
+        factory: ['@everlution.file.local_url_provider.factory', create]
+
+    everlution.file.local_url_provider.factory:
+        class: Everlution\FileJetBundle\Api\UrlProvider\Factory\LocalUrlProviderFactory
+        arguments:
+            - '@everlution.file.cache'
+            - '@everlution.file.remote_url_provider'
+            - '@everlution.file.storages'
+
+    everlution.file.remote_url_provider:
+        class: Everlution\FileJetBundle\Api\UrlProvider\RemoteUrlProvider
+        arguments:
+            - '@everlution.file.storages'
+            - '@everlution.file.request_sender.rpc'
+
+    everlution.file.url_provider.twig_extension:
+        class: Everlution\FileJetBundle\Twig\UrlProvider
+        public: false
+        arguments:
+            - '@everlution.file.url_provider'
+        tags:
+            - { name: twig.extension }
