@@ -25,6 +25,7 @@ class LocalUrlProvider implements UrlProvider
     public function __construct($urlPatterns, Storages $storages)
     {
         $this->urlPatterns = $urlPatterns;
+        $this->storages = $storages;
     }
 
     /**
