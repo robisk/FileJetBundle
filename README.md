@@ -2,15 +2,6 @@
 
 # Installation
 
-This bundle is private, so the repository must be defined in *composer.json*.
-```json
-"repositories": [
-    {"type": "vcs", "url":  "git@github.com:everlutionsk/FileJetBundle.git"}
-]
-```
-
-Now it is possible to install bundle itself.
-
 ```sh
 composer require everlutionsk/file-jet-bundle
 ```
