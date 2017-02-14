@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Everlution FileJet bundle for Symfony framework",
   "type": "everlution-bundle",
-  "keywords": ["FileJet", "file", "symfony", "everlution", "bundle"],
+  "keywords": ["filejet", "file", "symfony", "everlution", "bundle"],
   "authors": [
     {
       "name": "Tomas Szabo",
