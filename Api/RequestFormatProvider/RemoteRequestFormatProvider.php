@@ -2,7 +2,7 @@
 
 namespace Everlution\FileJetBundle\Api\RequestFormatProvider;
 
-use Everlution\FileJetBundle\Api\Common\StorageRequests;
+use Everlution\FileJetBundle\Api\Common\StorageUtils;
 use Everlution\FileJetBundle\Api\RequestFormatProvider;
 use Everlution\FileJetBundle\Http\Request\ImmutableRequest;
 use Everlution\FileJetBundle\Http\Request\Request;
@@ -11,7 +11,7 @@ use Everlution\FileJetBundle\Storage\Storages;
 
 class RemoteRequestFormatProvider implements RequestFormatProvider
 {
-    use StorageRequests;
+    use StorageUtils;
 
     /** @var  Storages */
     protected $storages;
@@ -61,7 +61,7 @@ class RemoteRequestFormatProvider implements RequestFormatProvider
         $storage = $this->storages->getByName($uploadRequest->getStorageName());
 
         $body = [
-            'path' => $uploadRequest->getPath(),
+            'path' => $storage->getPrefix() . $uploadRequest->getPath(),
             'expires' => $uploadRequest->getExpires()->getTimestamp() * 1000,
             'contentType' => $uploadRequest->getContentType()
         ];

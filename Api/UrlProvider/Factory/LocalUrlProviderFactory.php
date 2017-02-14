@@ -46,7 +46,7 @@ class LocalUrlProviderFactory
             $this->cache->save(static::CACHE_KEY, $patterns);
         }
 
-        return new Provider($patterns);
+        return new Provider($patterns, $this->storages);
     }
 
     /**

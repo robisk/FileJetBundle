@@ -11,7 +11,7 @@ class StoragesFactory
     public static function createStorages(array $storagesConfig)
     {
         $storages = array_map(function ($config) {
-            return new Storage($config['id'], $config['api_key'], $config['name']);
+            return new Storage($config['id'], $config['api_key'], $config['name'], $config['prefix']);
         }, $storagesConfig);
 
         return new Storages($storages);

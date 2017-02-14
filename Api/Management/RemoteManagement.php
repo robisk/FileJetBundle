@@ -3,7 +3,7 @@
 namespace Everlution\FileJetBundle\Api\Management;
 
 use Everlution\FileJetBundle\Api\Common\IdentifiableFile;
-use Everlution\FileJetBundle\Api\Common\StorageRequests;
+use Everlution\FileJetBundle\Api\Common\StorageUtils;
 use Everlution\FileJetBundle\Api\Management;
 use Everlution\FileJetBundle\Http\Request\ImmutableRequest;
 use Everlution\FileJetBundle\Http\Request\Request;
@@ -12,7 +12,7 @@ use Everlution\FileJetBundle\Storage\Storages;
 
 class RemoteManagement implements Management
 {
-    use StorageRequests;
+    use StorageUtils;
 
     /** @var Storages */
     protected $storages;
@@ -36,7 +36,7 @@ class RemoteManagement implements Management
     public function deleteFile(IdentifiableFile $file)
     {
         $storage = $this->storages->getByName($file->getFileStorageName());
-        $path = '/file/' . urlencode($file->getFileIdentifier());
+        $path = '/file/' . $this->toEncodedFileIdentifier($file, $storage);
 
         $request = new ImmutableRequest(Request::METHOD_DELETE, $path);
         $storageRequest = $this->toStorageRequest($request, $storage);

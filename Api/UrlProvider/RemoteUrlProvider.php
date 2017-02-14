@@ -3,7 +3,7 @@
 namespace Everlution\FileJetBundle\Api\UrlProvider;
 
 use Everlution\FileJetBundle\Api\Common\IdentifiableFile;
-use Everlution\FileJetBundle\Api\Common\StorageRequests;
+use Everlution\FileJetBundle\Api\Common\StorageUtils;
 use Everlution\FileJetBundle\Api\UrlProvider;
 use Everlution\FileJetBundle\Api\UrlProvider\Patterns\UrlPatterns;
 use Everlution\FileJetBundle\Http\Request\ImmutableRequest;
@@ -13,7 +13,7 @@ use Everlution\FileJetBundle\Storage\Storages;
 
 class RemoteUrlProvider implements UrlProvider
 {
-    use StorageRequests;
+    use StorageUtils;
 
     /** @var  Storages */
     protected $storages;
@@ -37,8 +37,8 @@ class RemoteUrlProvider implements UrlProvider
      */
     public function getPublicUrl(IdentifiableFile $file)
     {
-        $path = '/file/' . urlencode($file->getFileIdentifier()) . '/url';
         $storage = $this->storages->getByName($file->getFileStorageName());
+        $path = '/file/' . $this->toEncodedFileIdentifier($file, $storage) . '/url';
 
         $request = new ImmutableRequest(Request::METHOD_GET, $path);
         $storageRequest = $this->toStorageRequest($request, $storage);
@@ -54,8 +54,8 @@ class RemoteUrlProvider implements UrlProvider
      */
     public function getPublicMutatedUrl(IdentifiableFile $file, $mutation, $ttl = null)
     {
-        $path = '/file/' . urlencode($file->getFileIdentifier()) . '/url/' . urlencode($mutation);
         $storage = $this->storages->getByName($file->getFileStorageName());
+        $path = '/file/' . $this->toEncodedFileIdentifier($file, $storage) . '/url/' . urlencode($mutation);
 
         $request = new ImmutableRequest(Request::METHOD_GET, $path);
         if ($ttl !== null) {
