@@ -3,29 +3,20 @@
 namespace Everlution\FileJetBundle\Api\UrlProvider;
 
 use Everlution\FileJetBundle\Api\Common\IdentifiableFile;
-use Everlution\FileJetBundle\Api\Common\StorageUtils;
 use Everlution\FileJetBundle\Api\UrlProvider;
 use Everlution\FileJetBundle\Api\UrlProvider\Patterns\UrlPatterns;
-use Everlution\FileJetBundle\Storage\Storages;
 
 class LocalUrlProvider implements UrlProvider
 {
-    use StorageUtils;
-
     /** @var UrlPatterns[] */
     protected $urlPatterns;
 
-    /** @var Storages */
-    protected $storages;
-
     /**
      * @param UrlPatterns[] $urlPatterns
-     * @param Storages $storages
      */
-    public function __construct($urlPatterns, Storages $storages)
+    public function __construct($urlPatterns)
     {
         $this->urlPatterns = $urlPatterns;
-        $this->storages = $storages;
     }
 
     /**
@@ -35,9 +26,7 @@ class LocalUrlProvider implements UrlProvider
     public function getPublicUrl(IdentifiableFile $file)
     {
         $pattern = $this->getUrlPatternsByFile($file)->getPublic();
-        $storage = $this->storages->getByName($file->getFileStorageName());
-        $identifier = $this->toFileIdentifier($file, $storage);
-        return $this->substituteInPattern('$identifier', $identifier, $pattern);
+        return $this->substituteInPattern('$identifier', $file->getFileIdentifier(), $pattern);
     }
 
     /**
@@ -48,14 +37,11 @@ class LocalUrlProvider implements UrlProvider
      */
     public function getPublicMutatedUrl(IdentifiableFile $file, $mutation, $ttl = null)
     {
-        $storage = $this->storages->getByName($file->getFileStorageName());
-        $identifier = $this->toFileIdentifier($file, $storage);
-
         $pattern = $this->getUrlPatternsByFile($file)->getPublicMutated();
 
-        $pattern = $this->substituteInPattern('$originIdentifier', $identifier, $pattern);
+        $pattern = $this->substituteInPattern('$originIdentifier', $file->getFileIdentifier(), $pattern);
         $pattern = $this->substituteInPattern('$mutation', $mutation, $pattern);
-        $pattern = $this->substituteInPattern('$targetFileName', basename($identifier), $pattern);
+        $pattern = $this->substituteInPattern('$targetFileName', basename($file->getFileIdentifier()), $pattern);
 
         if ($ttl !== null) {
             $pattern .= "?ttl=$ttl";

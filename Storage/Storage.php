@@ -13,21 +13,16 @@ class Storage
     /** @var string */
     protected $name;
 
-    /** @var string */
-    protected $prefix;
-
     /**
      * @param string $id
      * @param string $apiKey
      * @param string $name
-     * @param string $prefix
      */
-    public function __construct($id, $apiKey, $name, $prefix)
+    public function __construct($id, $apiKey, $name)
     {
         $this->id = $id;
         $this->apiKey = $apiKey;
         $this->name = $name;
-        $this->prefix = $prefix;
     }
 
     /**
@@ -52,14 +47,6 @@ class Storage
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrefix()
-    {
-        return $this->prefix;
     }
 
     /**

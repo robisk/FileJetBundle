@@ -30,7 +30,6 @@ everlution_file_jet:
     - id: <STORAGE_ID>
       api_key: <API_KEY>
       name: <CUSTOM_LOCAL_NAME>
-      prefix: dev/ #optional
 ```
 
 # Usage
