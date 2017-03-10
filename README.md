@@ -52,7 +52,7 @@ Use
 Mutations can be chained like "sz_1000x1000,c_100x100".
 
 # How to
-## Construct crop mutation
+#### Construct crop mutation
 
 ```js
 // Create cropper: https://fengyuanchen.github.io/cropperjs/
