@@ -45,7 +45,7 @@ Use
 #### Mutation examples
 **Resize:** sz_1000x1000_100_100 => size = 1000x1000, offset = 100x100
 
-**Crop:** c_1000x1000+100+100
+**Crop:** c_1000x1000_100_100
 
 **Relative crop:** c_0.4x0.89_0.1_0.1 => same as crop, but size and offset is in %.
 
