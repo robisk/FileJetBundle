@@ -32,7 +32,7 @@ everlution_file_jet:
       name: <CUSTOM_LOCAL_NAME>
 ```
 
-# Usage in PHP
+# Usage
 
 See example directory.
 
