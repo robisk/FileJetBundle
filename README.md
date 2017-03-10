@@ -36,8 +36,23 @@ everlution_file_jet:
 
 See example directory.
 
+### Image mutations
 
-# Usage in browser
+Use
+
+```{{ file_url(file, '<MUTATION>') }}``` in view, where *file* is an implementation of *Everlution\FileJetBundle\Entity\File* and second argument is the file mutation.
+
+#### Mutation examples
+**Resize:** sz_1000x1000_100_100 => size = 1000x1000, offset = 100x100
+
+**Crop:** c_1000x1000_100_100
+
+**Relative crop:** c_0.4x0.89_0.1_0.1 => same as crop, but size and offset is in %.
+
+Mutations can be chained like "sz_1000x1000,c_100x100".
+
+# How to
+## Construct crop mutation
 
 ```js
 // Create cropper: https://fengyuanchen.github.io/cropperjs/
@@ -60,18 +75,3 @@ var y = (cropData.y / canvasData.naturalHeight).toFixed(4);
 
 var mutation = 'c_' + width + 'x' + height + '_' + x + '_' + y;
 ```
-
-### Image mutations
-
-Use
-
-```{{ file_url(file, '<MUTATION>') }}``` in view, where *file* is an implementation of *Everlution\FileJetBundle\Entity\File* and second argument is the file mutation.
-
-#### Mutation examples
-**Resize:** sz_1000x1000_100_100 => size = 1000x1000, offset = 100x100
-
-**Crop:** c_1000x1000_100_100
-
-**Relative crop:** c_0.4x0.89_0.1_0.1 => same as crop, but size and offset is in %.
-
-Mutations can be chained like "sz_1000x1000,c_100x100".
