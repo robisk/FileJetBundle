@@ -32,9 +32,34 @@ everlution_file_jet:
       name: <CUSTOM_LOCAL_NAME>
 ```
 
-# Usage
+# Usage in PHP
 
 See example directory.
+
+
+# Usage in browser
+
+```js
+// Create cropper: https://fengyuanchen.github.io/cropperjs/
+var cropper = new Cropper(element, {
+      checkCrossOrigin: false,
+      zoomable: false,
+      aspectRatio: 1,
+      responsive: true,
+      viewMode: 2
+    });
+
+// Construct mutation
+var cropData = cropper.getData(true);
+var canvasData = cropper.getCanvasData();
+
+var width = (cropData.width / canvasData.naturalWidth).toFixed(4);
+var height = (cropData.height / canvasData.naturalHeight).toFixed(4);
+var x = (cropData.x / canvasData.naturalWidth).toFixed(4);
+var y = (cropData.y / canvasData.naturalHeight).toFixed(4);
+
+var mutation = 'c_' + width + 'x' + height + '_' + x + '_' + y;
+```
 
 ### Image mutations
 
