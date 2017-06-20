@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace ExampleBundle\Controller;
 
-use AppBundle\Entity\TestFile;
+use ExampleBundle\Entity\TestFile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ class CropController extends Controller
         $file = $this->findFile($id);
         $urlPatterns = $this->get('everlution.file.url_provider')->downloadUrlPatterns($file->getFileStorageName());
 
-        return $this->render('AppBundle::single-crop.html.twig', [
+        return $this->render('ExampleBundle::single-crop.html.twig', [
             'file' => $file,
             'urlPatterns' => $urlPatterns
         ]);
@@ -57,6 +57,6 @@ class CropController extends Controller
     protected function findFile($id)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        return $entityManager->getRepository('AppBundle:TestFile')->find($id);
+        return $entityManager->getRepository('ExampleBundle:TestFile')->find($id);
     }
 }

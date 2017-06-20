@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace ExampleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Everlution\FileJetBundle\Entity\MutableFile;
