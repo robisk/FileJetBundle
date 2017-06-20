@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace ExampleBundle\Controller;
 
-use AppBundle\Entity\TestFile;
+use ExampleBundle\Entity\TestFile;
 use Everlution\FileJetBundle\Api\RequestFormatProvider\UploadRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,7 +50,7 @@ class Api extends Controller
      */
     public function deleteAction($id)
     {
-        $file = $this->getDoctrine()->getRepository('AppBundle:TestFile')->find($id);
+        $file = $this->getDoctrine()->getRepository('ExampleBundle:TestFile')->find($id);
 
         $fileManagement = $this->get('everlution.file.management');
         $fileManagement->deleteFile($file);

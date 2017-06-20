@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace ExampleBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,8 +13,8 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $files = $entityManager->getRepository('AppBundle:TestFile')->findAll();
+        $files = $entityManager->getRepository('ExampleBundle:TestFile')->findAll();
 
-        return $this->render('AppBundle::homepage.html.twig', ['files' => $files]);
+        return $this->render('ExampleBundle::homepage.html.twig', ['files' => $files]);
     }
 }
