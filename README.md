@@ -49,6 +49,14 @@ Use
 
 **Relative crop:** c_0.4x0.89_0.1_0.1 => same as crop, but size and offset is in %.
 
+**Fill the image:** fill_200x200 => you can have smaller image and want to fill it to certain size
+
+**Position:** pos_center => used with **fill** - position of smaller image within larger filled image (center + cardinal directions eg. southwest etc)
+
+**Background:** bg_white => used with **fill** - background color of fill (transparent to be implemented)
+
+**Rotate:** rot_90 => rotate 90, 180, 270 degrees
+
 Mutations can be chained like "sz_1000x1000,c_100x100".
 
 # How to
