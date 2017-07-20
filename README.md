@@ -57,6 +57,8 @@ Use
 
 **Rotate:** rot_90 => rotate 90, 180, 270 degrees
 
+Basically, string before "\_" represents operation and string after "_" represents arguments. Arguments are like ImageMagick's [geometry](http://www.imagemagick.org/script/command-line-processing.php#geometry).
+
 Mutations can be chained like "sz_1000x1000,c_100x100".
 
 # How to
