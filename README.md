@@ -85,3 +85,57 @@ var y = (cropData.y / canvasData.naturalHeight).toFixed(4);
 
 var mutation = 'c_' + width + 'x' + height + '_' + x + '_' + y;
 ```
+
+#### Construct advanced crop mutation with variable aspec ratio
+Allows to crop image with a custom aspec ratio. Result will be padded with an empty space to match a required aspect ratio (2.5).
+
+```ts
+
+// Create cropper: https://fengyuanchen.github.io/cropperjs/
+const cropper = new Cropper(element, {
+    checkCrossOrigin: false,
+    zoomable: false,
+    responsive: true,
+    viewMode: 2
+  });
+  
+// Construct mutation
+const mutation = crop(2.5);
+   
+function crop(requiredRatio: number): string {
+  const cropData = cropper.getData(true);
+  const canvasData = cropper.getCanvasData();
+
+  const mutations = [
+    toCropMutation(cropData, canvasData),
+    ...toFillMutation(cropData, requiredRatio)
+  ];
+
+  return mutations.join(',');
+}
+
+function toCropMutation(cropData, canvasData): string {
+  const width = (cropData.width / canvasData.naturalWidth).toFixed(4);
+  const height = (cropData.height / canvasData.naturalHeight).toFixed(4);
+  const x = (cropData.x / canvasData.naturalWidth).toFixed(4);
+  const y = (cropData.y / canvasData.naturalHeight).toFixed(4);
+
+  return 'c_' + width + 'x' + height + '_' + x + '_' + y;
+}
+
+function *toFillMutation(cropData, requiredRatio: number): IterableIterator<string> {
+  const currentRatio = cropData.width / cropData.height;
+
+  if (requiredRatio !== currentRatio) {
+    yield 'pos_center';
+  }
+
+  if (requiredRatio > currentRatio) {
+    // Adds left and right padding
+    yield 'fill_' + (cropData.height * requiredRatio / cropData.width).toFixed(4) + 'x1.0';
+  } else if (requiredRatio < currentRatio) {
+    // Adds top and bottom padding
+    yield 'fill_1.0x' + (cropData.width / requiredRatio / cropData.height).toFixed(4);
+  }
+}
+```
