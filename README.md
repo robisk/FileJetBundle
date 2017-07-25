@@ -61,6 +61,8 @@ Basically, string before "\_" represents operation and string after "_" represen
 
 Mutations can be chained like "sz_1000x1000,c_100x100".
 
+ZoomCrop - `sz_325x245>,bg_white,pos_center,fill_325x245` - `sz_XxY>` means that it will only downsize the picture (not enlarge), `bg_white` - adds white background ([see color names](http://www.imagemagick.org/script/color.php#color_names)), `pos_center` - will center the image (NorthWest, North, NorthEast, West, Center, East, SouthWest, South, SouthEast), `fill_XxY` - will fill the image with background color to the specified dimmensions.
+
 # How to
 #### Construct crop mutation
 
